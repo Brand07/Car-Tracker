@@ -68,9 +68,29 @@ class App(customtkinter.CTk):
     def handle_submit_button(self):
         """Handles the submit button click"""
         odometer = self.odometer_entry.get()
+        # Check if the odometer reading is less than what it was before
+        fill_ups = pd.read_csv("fill_ups.csv")
+        if len(fill_ups) > 0:
+            if int(odometer) < fill_ups["Odometer"].iloc[-1]:
+                print("Odometer reading must be greater than the previous reading. Please try again.")
+                return
+
         fuel_price = self.fuel_price_entry.get()
+        # Check if the fuel price is less than or equal to zero
+        if float(fuel_price) <= 0:
+            print("Fuel price must be greater than zero. Please try again.")
+            return
+
         total_gallons = self.Entry3.get()
+        # Check if the total gallons is less than or equal to zero
+        if float(total_gallons) <= 0:
+            print("Total gallons must be greater than zero. Please try again.")
+            return
+
         total_cost = self.total_cost_entry.get()
+        # Check if the total cost is less than or equal to zero
+        if float(total_cost) <= 0:
+            print("Total cost must be greater than zero. Please try again.")
         date = self.date_combobox.get()
 
         # Check if the odometer reading is a number
