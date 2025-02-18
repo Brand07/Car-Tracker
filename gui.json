@@ -1,0 +1,156 @@
+{
+  "Pages": [
+    "Page 1"
+  ],
+  "CTk": {
+    "title": "Vehicle Fuel Efficiency Tacker",
+    "fg_color": [
+      "gray92",
+      "gray14"
+    ],
+    "width": 800,
+    "height": 600
+  },
+  "CTkFrame1": {
+    "x": 0,
+    "y": 360,
+    "width": 800,
+    "height": 240,
+    "master": "Page 1"
+  },
+  "CTkButton2": {
+    "x": 80,
+    "y": 380,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "odometer_button",
+    "text": "Current Odometer Reading",
+    "hover": false,
+    "master": "Page 1",
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')"
+  },
+  "CTkEntry3": {
+    "x": 80,
+    "y": 420,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "odometer_entry",
+    "width": 160,
+    "master": "Page 1"
+  },
+  "CTkButton4": {
+    "x": 80,
+    "y": 480,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Fuel Price",
+    "hover": false,
+    "master": "Page 1",
+    "name": "fuel_price_button",
+    "width": 160,
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')"
+  },
+  "CTkEntry5": {
+    "x": 80,
+    "y": 520,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 160,
+    "master": "Page 1",
+    "name": "fuel_price_entry"
+  },
+  "CTkButton6": {
+    "x": 320,
+    "y": 380,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Total Gallons Purchased",
+    "hover": false,
+    "master": "Page 1",
+    "name": "total_gallons_button",
+    "width": 160,
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')"
+  },
+  "CTkEntry7": {
+    "x": 320,
+    "y": 420,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 160,
+    "master": "Page 1"
+  },
+  "CTkButton8": {
+    "x": 320,
+    "y": 480,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Total Cost",
+    "hover": false,
+    "master": "Page 1",
+    "width": 160,
+    "name": "total_cost_button",
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')"
+  },
+  "CTkEntry9": {
+    "x": 318,
+    "y": 520,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 160,
+    "master": "Page 1",
+    "name": "total_cost_entry"
+  },
+  "CTkButton10": {
+    "x": 655,
+    "y": 544,
+    "name": "submit_button",
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "font": "customtkinter.CTkFont('Roboto', size=26, weight='bold')",
+    "height": 50,
+    "text": "Submit",
+    "fg_color": "#00b900",
+    "text_color": "#000000",
+    "master": "Page 1"
+  },
+  "CTkButton11": {
+    "x": 550,
+    "y": 380,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Select a Date",
+    "hover": false,
+    "master": "Page 1",
+    "width": 160,
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
+    "name": "date_picker_label"
+  },
+  "CTkFrame12": {
+    "x": 4,
+    "y": 0,
+    "name": "top_frame",
+    "width": 800,
+    "height": 100,
+    "master": "Page 1"
+  }
+}
