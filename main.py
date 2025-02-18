@@ -1,15 +1,16 @@
 # Author: Brand07
 # Date: 2/18/2025
 import json
+import os
 from xml.etree.ElementTree import indent
 
 import pandas as pd
 
 
-# Initialize the pandas DataFrame for the fill-ups
-fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
-fill_ups.to_csv("fill_ups.csv", index=False)
-
+# Check if the CSV file exists before initializing the DataFrame
+if not os.path.isfile("fill_ups.csv"):
+    fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
+    fill_ups.to_csv("fill_ups.csv", index=False)
 
 
 
@@ -83,10 +84,55 @@ class App:
         """Get the fill-up from the user and add it to the DataFrame"""
         print("Enter the following information for the fill-up:")
         date = input("Date (MM/DD/YYYY): ")
+        # Check if the date is in the correct format
+        if len(date) != 10 or date[2] != "/" or date[5] != "/":
+            print("Invalid date format. Please try again.")
+            self.add_fill_up()
+            return
+
         odometer = input("Odometer reading: ")
+        # Check if the odometer reading is a number
+        try:
+            odometer = int(odometer)
+        except ValueError:
+            print("Odometer reading must be a number. Please try again.")
+            self.add_fill_up()
+            return
+
+        # Make sure the odometer reading is greater than the previous reading
+        try:
+            fill_ups = pd.read_csv('fill_ups.csv')
+        except FileNotFoundError:
+            fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
+
+        if not fill_ups.empty and odometer <= fill_ups["Odometer"].iloc[-1]:
+            print("Odometer reading must be greater than the previous reading. Please try again.")
+            self.add_fill_up()
+            return
+
         gallons = input("Gallons purchased: ")
+        # Check if the gallons purchased is a number
+        try:
+            gallons = float(gallons)
+        except ValueError:
+            print("Gallons purchased must be a number. Please try again.")
+            self.add_fill_up()
+            return
         gas_price = input("Price per gallon: ")
+        # Check if the price per gallon is a number
+        try:
+            gas_price = float(gas_price)
+        except ValueError:
+            print("Price per gallon must be a number. Please try again.")
+            self.add_fill_up()
         total_cost = input("Total cost: ")
+        # Check if the total cost is a number
+        try:
+            total_cost = float(total_cost)
+        except ValueError:
+            print("Total cost must be a number. Please try again.")
+            self.add_fill_up()
+            return
 
         fill_up = {
             "Date": date,
@@ -96,7 +142,6 @@ class App:
             "Total Cost": total_cost
         }
 
-        fill_ups = pd.read_csv('fill_ups.csv')
         fill_ups = fill_ups._append(fill_up, ignore_index=True)
         fill_ups.to_csv('fill_ups.csv', index=False)
 
