@@ -10,7 +10,7 @@ class App:
         self.model = ""
         self.brand = ""
         self.year = ""
-        self.tank_size = ""
+        self.tank_size = 0.00
         self.mpg = 0.00
         self.odometer = 0
         self.mileage = 0
@@ -20,7 +20,7 @@ class App:
         self.total_gallons = 0.00
 
 
-    def get_vehicle_info(self):
+    def insert_vehicle_info(self):
         self.model = input("Enter the model of the vehicle: ")
         self.brand = input("Enter the brand of the vehicle: ")
         self.year = input("Enter the year of the vehicle: ")
