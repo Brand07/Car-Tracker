@@ -44,10 +44,10 @@ class App(customtkinter.CTk):
         self.total_cost_button.place(x=320, y=480)
 
         self.total_cost_entry = customtkinter.CTkEntry(self, bg_color=['gray86', 'gray17'], width=160)
-        self.total_cost_entry.place(x=318, y=520)
+        self.total_cost_entry.place(x=320, y=520)
 
         self.submit_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], font=customtkinter.CTkFont('Roboto', size=26, weight='bold'), height=50, text="Submit", fg_color="#00b900", text_color="#000000", command=self.handle_submit_button)
-        self.submit_button.place(x=655, y=544)
+        self.submit_button.place(x=655, y=545)
 
         self.date_picker_label = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Select a Date", hover=False, width=160, font=customtkinter.CTkFont('Roboto', size=13, weight='bold'))
         self.date_picker_label.place(x=550, y=380)
@@ -78,6 +78,14 @@ class App(customtkinter.CTk):
                 return
 
         fuel_price = self.fuel_price_entry.get()
+        # Check if the entry is a number or float
+        try:
+            fuel_price = float(fuel_price)
+        except ValueError:
+            print("Fuel price must be a number. Please try again.")
+            #Clear the entry
+            self.fuel_price_entry.delete(0, tkinter.END)
+            return
         # Check if the fuel price is less than or equal to zero
         if float(fuel_price) <= 0:
             print("Fuel price must be greater than zero. Please try again.")
@@ -86,6 +94,13 @@ class App(customtkinter.CTk):
             return
 
         total_gallons = self.Entry3.get()
+        # Check if the entry is a number or float
+        try:
+            total_gallons = float(total_gallons)
+        except ValueError:
+            print("Total gallons must be a number. Please try again.")
+            #Clear the entry
+            self.Entry3.delete(0, tkinter.END)
         # Check if the total gallons is less than or equal to zero
         if float(total_gallons) <= 0:
             print("Total gallons must be greater than zero. Please try again.")
@@ -94,6 +109,14 @@ class App(customtkinter.CTk):
             return
 
         total_cost = self.total_cost_entry.get()
+        # Check if the entry is a number or float
+        try:
+            total_cost = float(total_cost)
+        except ValueError:
+            print("Total cost must be a number. Please try again.")
+            #Clear the entry
+            self.total_cost_entry.delete(0, tkinter.END)
+            return
         # Check if the total cost is less than or equal to zero
         if float(total_cost) <= 0:
             print("Total cost must be greater than zero. Please try again.")
@@ -148,6 +171,13 @@ class App(customtkinter.CTk):
         fill_ups = pd.read_csv("fill_ups.csv")
         fill_ups = pd.concat([fill_ups, pd.DataFrame([fill_up])], ignore_index=True)
         fill_ups.to_csv("fill_ups.csv", index=False)
+
+        # Clear the entries
+        self.odometer_entry.delete(0, tkinter.END)
+        self.fuel_price_entry.delete(0, tkinter.END)
+        self.Entry3.delete(0, tkinter.END)
+        self.total_cost_entry.delete(0, tkinter.END)
+
 
 if __name__ == "__main__":
     app = App()
