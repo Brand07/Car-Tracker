@@ -5,7 +5,7 @@ from picker import CTkDatePicker
 import pandas as pd
 import os
 
-customtkinter.set_appearance_mode("dark")
+customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("dark-blue")
 
 class App(customtkinter.CTk):
@@ -58,7 +58,7 @@ class App(customtkinter.CTk):
         CTkDatePicker(self.date_combobox)
 
         self.top_frame = customtkinter.CTkFrame(self, width=800, height=100)
-        self.top_frame.place(x=4, y=0)
+        self.top_frame.place(x=0, y=0)
 
         # Check if the CSV file exists before initializing the DataFrame
         if not os.path.isfile("fill_ups.csv"):
