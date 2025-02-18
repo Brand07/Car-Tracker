@@ -2,15 +2,22 @@ import tkinter
 import customtkinter
 from PIL import Image
 from picker import CTkDatePicker
+import pandas as pd
+import os
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
-class Page_1(customtkinter.CTkFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-        self.master = master
-        self.app = app  # Store the App instance
+class App(customtkinter.CTk):
+
+    HEIGHT = 600
+    WIDTH = 800
+
+    def __init__(self):
+        super().__init__()
+        self.title("Vehicle Fuel Efficiency Tracker")
+        self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
+        self.resizable(False, False)
 
         self.Frame1 = customtkinter.CTkFrame(self, width=800, height=240)
         self.Frame1.place(x=0, y=360)
@@ -39,7 +46,7 @@ class Page_1(customtkinter.CTkFrame):
         self.total_cost_entry = customtkinter.CTkEntry(self, bg_color=['gray86', 'gray17'], width=160)
         self.total_cost_entry.place(x=318, y=520)
 
-        self.submit_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], font=customtkinter.CTkFont('Roboto', size=26, weight='bold'), height=50, text="Submit", fg_color="#00b900", text_color="#000000")
+        self.submit_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], font=customtkinter.CTkFont('Roboto', size=26, weight='bold'), height=50, text="Submit", fg_color="#00b900", text_color="#000000", command=self.handle_submit_button)
         self.submit_button.place(x=655, y=544)
 
         self.date_picker_label = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Select a Date", hover=False, width=160, font=customtkinter.CTkFont('Roboto', size=13, weight='bold'))
@@ -53,18 +60,58 @@ class Page_1(customtkinter.CTkFrame):
         self.top_frame = customtkinter.CTkFrame(self, width=800, height=100)
         self.top_frame.place(x=4, y=0)
 
-class App(customtkinter.CTk):
+        # Check if the CSV file exists before initializing the DataFrame
+        if not os.path.isfile("fill_ups.csv"):
+            fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
+            fill_ups.to_csv("fill_ups.csv", index=False)
 
-    HEIGHT = 600
-    WIDTH = 800
+    def handle_submit_button(self):
+        """Handles the submit button click"""
+        odometer = self.odometer_entry.get()
+        fuel_price = self.fuel_price_entry.get()
+        total_gallons = self.Entry3.get()
+        total_cost = self.total_cost_entry.get()
+        date = self.date_combobox.get()
 
-    def __init__(self):
-        super().__init__()
-        self.title("Vehicle Fuel Efficiency Tracker")
-        self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
-        self.resizable(False, False)
-        self.page_1 = Page_1(self, fg_color='transparent', corner_radius=0, border_width=0)
-        self.page_1.pack(expand=True, fill='both')
+        # Check if the odometer reading is a number
+        try:
+            odometer = int(odometer)
+        except ValueError:
+            print("Odometer reading must be a number. Please try again.")
+            return
+
+        # Check if the fuel price is a number
+        try:
+            fuel_price = float(fuel_price)
+        except ValueError:
+            print("Fuel price must be a number. Please try again.")
+            return
+
+        # Check if the total gallons is a number
+        try:
+            total_gallons = float(total_gallons)
+        except ValueError:
+            print("Total gallons must be a number. Please try again.")
+            return
+
+        # Check if the total cost is a number
+        try:
+            total_cost = float(total_cost)
+        except ValueError:
+            print("Total cost must be a number. Please try again.")
+            return
+
+        fill_up = {
+            "Date": date,
+            "Odometer": odometer,
+            "Gallons": total_gallons,
+            "Gas Price": fuel_price,
+            "Total Cost": total_cost
+        }
+
+        fill_ups = pd.read_csv("fill_ups.csv")
+        fill_ups = pd.concat([fill_ups, pd.DataFrame([fill_up])], ignore_index=True)
+        fill_ups.to_csv("fill_ups.csv", index=False)
 
 if __name__ == "__main__":
     app = App()
