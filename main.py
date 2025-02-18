@@ -145,6 +145,38 @@ class App:
         fill_ups = fill_ups._append(fill_up, ignore_index=True)
         fill_ups.to_csv('fill_ups.csv', index=False)
 
+    def get_total_money_spent(self):
+        """Calculates the total money spent on gas"""
+        try:
+            fill_ups = pd.read_csv('fill_ups.csv')
+        except FileNotFoundError:
+            print("No fill-ups found.")
+            return
+
+        total_cost = fill_ups["Total Cost"].sum()
+        print(f"Total money spent on gas: ${total_cost:.2f}")
+
+    def get_total_gallons(self):
+        """Calculates the total gallons purchased"""
+        try:
+            fill_ups = pd.read_csv('fill_ups.csv')
+        except FileNotFoundError:
+            print("No fill-ups found.")
+            return
+
+        total_gallons = fill_ups["Gallons"].sum()
+        print(f"Total gallons purchased: {total_gallons:.2f}")
+
+    def get_total_miles_driven(self):
+        """Calculates the total miles driven"""
+        try:
+            fill_ups = pd.read_csv('fill_ups.csv')
+        except FileNotFoundError:
+            print("No fill-ups found.")
+            return
+
+        total_miles = fill_ups["Odometer"].iloc[-1] - fill_ups["Odometer"].iloc[0]
+        print(f"Total miles driven: {total_miles}")
 
 
     def clear_fill_up_file(self):
@@ -163,6 +195,7 @@ class App:
 
 if __name__ == '__main__':
     app = App()
+    app.get_total_money_spent()
 
 
 
