@@ -1,6 +1,5 @@
 import tkinter
 import customtkinter
-from PIL import Image
 from picker import CTkDatePicker
 import pandas as pd
 import os
