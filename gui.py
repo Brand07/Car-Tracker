@@ -99,15 +99,19 @@ class App(customtkinter.CTk):
             fuel_price = float(fuel_price)
         except ValueError:
             print("Fuel price must be a number. Please try again.")
+            self.fuel_price_button.configure(fg_color="red")
             #Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
         # Check if the fuel price is less than or equal to zero
         if float(fuel_price) <= 0:
+            self.fuel_price_button.configure(fg_color="red")
             print("Fuel price must be greater than zero. Please try again.")
             #Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
+        else:
+            self.fuel_price_button.configure(fg_color="blue")
 
         total_gallons = self.Entry3.get()
         # Check if the entry is a number or float
