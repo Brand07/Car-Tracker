@@ -14,8 +14,6 @@ if not os.path.isfile("fill_ups.csv"):
 
 
 
-
-
 class App:
     def __init__(self):
         self.tank_capacity = 0.00
@@ -118,6 +116,7 @@ class App:
             print("Gallons purchased must be a number. Please try again.")
             self.add_fill_up()
             return
+
         gas_price = input("Price per gallon: ")
         # Check if the price per gallon is a number
         try:
@@ -125,6 +124,7 @@ class App:
         except ValueError:
             print("Price per gallon must be a number. Please try again.")
             self.add_fill_up()
+
         total_cost = input("Total cost: ")
         # Check if the total cost is a number
         try:
@@ -147,10 +147,22 @@ class App:
 
 
 
+    def clear_fill_up_file(self):
+        """Clears the csv file. Will prompt the user for confirmation"""
+        confirm = input("Are you sure you want to clear the fill-up file? (Y/N): ")
+        if confirm.lower() == "y":
+            fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
+            fill_ups.to_csv("fill_ups.csv", index=False)
+        else:
+            print("File not cleared.")
+
+
+
+
+
 
 if __name__ == '__main__':
     app = App()
-    app.add_fill_up()
 
 
 
