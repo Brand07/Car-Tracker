@@ -67,7 +67,17 @@ class App(customtkinter.CTk):
 
     def handle_submit_button(self):
         """Handles the submit button click"""
+
         odometer = self.odometer_entry.get()
+        # Check if the entry is a number
+        try:
+            odometer = int(odometer)
+        except ValueError:
+            print("Odometer reading must be a number. Please try again.")
+            #Clear the entry
+            self.odometer_entry.delete(0, tkinter.END)
+            return
+
         # Check if the odometer reading is less than what it was before
         fill_ups = pd.read_csv("fill_ups.csv")
         if len(fill_ups) > 0:
