@@ -3,6 +3,17 @@
 import json
 from xml.etree.ElementTree import indent
 
+import pandas as pd
+
+
+# Initialize the pandas DataFrame for the fill-ups
+fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
+fill_ups.to_csv("fill_ups.csv", index=False)
+
+
+
+
+
 
 class App:
     def __init__(self):
@@ -13,10 +24,8 @@ class App:
         self.tank_size = 0.00
         self.mpg = 0.00
         self.odometer = 0
-        self.mileage = 0
         self.gas_price = 0.00
         self.total_cost = 0.00
-        self.total_miles = 0.00
         self.total_gallons = 0.00
 
 
@@ -70,12 +79,33 @@ class App:
         with open('vehicle_info.json', 'w') as json_file:
             json.dump(vehicle_info, json_file, indent=4)
 
+    def add_fill_up(self):
+        """Get the fill-up from the user and add it to the DataFrame"""
+        print("Enter the following information for the fill-up:")
+        date = input("Date (MM/DD/YYYY): ")
+        odometer = input("Odometer reading: ")
+        gallons = input("Gallons purchased: ")
+        gas_price = input("Price per gallon: ")
+        total_cost = input("Total cost: ")
+
+        fill_up = {
+            "Date": date,
+            "Odometer": odometer,
+            "Gallons": gallons,
+            "Gas Price": gas_price,
+            "Total Cost": total_cost
+        }
+
+        fill_ups = pd.read_csv('fill_ups.csv')
+        fill_ups = fill_ups._append(fill_up, ignore_index=True)
+        fill_ups.to_csv('fill_ups.csv', index=False)
+
 
 
 
 if __name__ == '__main__':
     app = App()
-    app.edit_vehicle_info()
+    app.add_fill_up()
 
 
 
