@@ -73,24 +73,32 @@ class App(customtkinter.CTk):
         if len(fill_ups) > 0:
             if int(odometer) < fill_ups["Odometer"].iloc[-1]:
                 print("Odometer reading must be greater than the previous reading. Please try again.")
+                #Clear the entry
+                self.odometer_entry.delete(0, tkinter.END)
                 return
 
         fuel_price = self.fuel_price_entry.get()
         # Check if the fuel price is less than or equal to zero
         if float(fuel_price) <= 0:
             print("Fuel price must be greater than zero. Please try again.")
+            #Clear the entry
+            self.fuel_price_entry.delete(0, tkinter.END)
             return
 
         total_gallons = self.Entry3.get()
         # Check if the total gallons is less than or equal to zero
         if float(total_gallons) <= 0:
             print("Total gallons must be greater than zero. Please try again.")
+            #Clear the entry
+            self.Entry3.delete(0, tkinter.END)
             return
 
         total_cost = self.total_cost_entry.get()
         # Check if the total cost is less than or equal to zero
         if float(total_cost) <= 0:
             print("Total cost must be greater than zero. Please try again.")
+            #Clear the entry
+            self.total_cost_entry.delete(0, tkinter.END)
         date = self.date_combobox.get()
 
         # Check if the odometer reading is a number
@@ -98,6 +106,8 @@ class App(customtkinter.CTk):
             odometer = int(odometer)
         except ValueError:
             print("Odometer reading must be a number. Please try again.")
+            #Clear the entry
+            self.odometer_entry.delete(0, tkinter.END)
             return
 
         # Check if the fuel price is a number
@@ -105,6 +115,8 @@ class App(customtkinter.CTk):
             fuel_price = float(fuel_price)
         except ValueError:
             print("Fuel price must be a number. Please try again.")
+            #Clear the entry
+            self.fuel_price_entry.delete(0, tkinter.END)
             return
 
         # Check if the total gallons is a number
@@ -112,6 +124,8 @@ class App(customtkinter.CTk):
             total_gallons = float(total_gallons)
         except ValueError:
             print("Total gallons must be a number. Please try again.")
+            #Clear the entry
+            self.Entry3.delete(0, tkinter.END)
             return
 
         # Check if the total cost is a number
@@ -119,6 +133,8 @@ class App(customtkinter.CTk):
             total_cost = float(total_cost)
         except ValueError:
             print("Total cost must be a number. Please try again.")
+            #Clear the entry
+            self.total_cost_entry.delete(0, tkinter.END)
             return
 
         fill_up = {
