@@ -3,6 +3,7 @@ import customtkinter
 from picker import CTkDatePicker
 import pandas as pd
 import os
+import json
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -62,14 +63,17 @@ class VehicleAdder(customtkinter.CTk):
             "Model": self.vehicle_model_entry.get(),
             "Year": self.vehicle_year_entry.get(),
             "Mileage": self.vehicle_mileage_entry.get(),
-
         }
 
         if not os.path.isfile("vehicles.json"):
             vehicles = pd.DataFrame(columns=["Nickname", "Brand", "Model", "Year", "Mileage"])
             vehicles.to_json("vehicles.json", orient="records")
 
-        vehicles = pd.read_json("vehicles.json")
+        try:
+            vehicles = pd.read_json("vehicles.json")
+        except ValueError:
+            vehicles = pd.DataFrame(columns=["Nickname", "Brand", "Model", "Year", "Mileage"])
+
         vehicles = pd.concat([vehicles, pd.DataFrame([vehicle])], ignore_index=True)
 
         with open("vehicles.json", "w") as file:
@@ -145,9 +149,13 @@ class App(customtkinter.CTk):
 
     def load_vehicles(self):
         if os.path.isfile("vehicles.json"):
-            vehicles = pd.read_json("vehicles.json")
-            vehicle_names = vehicles["Nickname"].tolist()
-            self.vehicle_combo.configure(values=vehicle_names)
+            try:
+                vehicles = pd.read_json("vehicles.json")
+                vehicle_names = vehicles["Nickname"].tolist()
+                self.vehicle_combo.configure(values=vehicle_names)
+            except ValueError:
+                print("Error: vehicles.json is empty or contains invalid JSON.")
+                self.vehicle_combo.configure(values=[])
 
     def open_vehicle_adder(self):
         self.vehicle_adder = VehicleAdder()
@@ -242,12 +250,13 @@ class App(customtkinter.CTk):
         vehicle_nickname = self.vehicle_combo.get()
 
         fill_up = {
+            "Vehicle Nickname": vehicle_nickname,
             "Date": date,
             "Odometer": odometer,
             "Gallons": total_gallons,
             "Gas Price": fuel_price,
             "Total Cost": total_cost,
-            "Vehicle Nickname": vehicle_nickname
+
         }
 
         fill_ups = pd.read_csv("fill_ups.csv")
@@ -270,5 +279,4 @@ class App(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = App()
-    app.show_total_fill_ups()
     app.mainloop()
