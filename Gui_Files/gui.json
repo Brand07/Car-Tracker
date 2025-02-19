@@ -106,7 +106,7 @@
     "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')"
   },
   "CTkEntry9": {
-    "x": 318,
+    "x": 320,
     "y": 520,
     "bg_color": [
       "gray86",
@@ -131,26 +131,61 @@
     "text_color": "#000000",
     "master": "Page 1"
   },
-  "CTkButton11": {
-    "x": 550,
-    "y": 380,
-    "bg_color": [
-      "gray86",
-      "gray17"
-    ],
-    "text": "Select a Date",
-    "hover": false,
-    "master": "Page 1",
-    "width": 160,
-    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
-    "name": "date_picker_label"
-  },
-  "CTkFrame12": {
-    "x": 4,
+  "CTkFrame11": {
+    "x": 0,
     "y": 0,
     "name": "top_frame",
     "width": 800,
     "height": 100,
+    "master": "Page 1"
+  },
+  "CTkComboBox12": {
+    "x": 10,
+    "y": 35,
+    "values": [],
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "vehicle_combo",
+    "justify": "center",
+    "master": "Page 1"
+  },
+  "CTkLabel13": {
+    "x": 30,
+    "y": 2,
+    "name": "select_vehicle_label",
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Select a vehicle",
+    "master": "Page 1"
+  },
+  "CTkButton14": {
+    "x": 650,
+    "y": 10,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "add_vehicle_button",
+    "text": "Add Vehicle",
+    "master": "Page 1"
+  },
+  "CTkTextbox15": {
+    "x": 4,
+    "y": 105,
+    "bg_color": [
+      "gray92",
+      "gray14"
+    ],
+    "name": "info_box",
+    "width": 460,
+    "height": 250,
+    "corner_radius": 5,
+    "border_width": 3,
+    "inserted_text": "",
     "master": "Page 1"
   }
 }
