@@ -7,12 +7,21 @@ import os
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
+class VehicleAdder(customtkinter.CTk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.title("Add Vehicle")
+        self.geometry("300x200")
+        self.resizable(False, False)
+
+
+
 class App(customtkinter.CTk):
 
     HEIGHT = 600
     WIDTH = 800
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__()
         self.title("Vehicle Fuel Efficiency Tracker")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
@@ -66,8 +75,13 @@ class App(customtkinter.CTk):
         self.select_vehicle_label = customtkinter.CTkLabel(self, bg_color=['gray86', 'gray17'], text="Select a vehicle")
         self.select_vehicle_label.place(x=30, y=2)
 
-        self.add_vehicle_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Add Vehicle")
+        self.add_vehicle_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Add Vehicle", command=self.open_vehicle_adder)
         self.add_vehicle_button.place(x=650, y=10)
+
+    def open_vehicle_adder(self):
+        self.vehicle_adder = VehicleAdder()
+        self.vehicle_adder.mainloop()
+
 
 
 
