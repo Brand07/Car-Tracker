@@ -56,22 +56,26 @@ class VehicleAdder(customtkinter.CTk):
         self.submit_button.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
 
     def handle_submit_button(self):
-        # Create a new entry in the vehicle.json file
         vehicle = {
+            "Nickname": self.vehicle_nickname_entry.get(),
             "Brand": self.vehicle_brand_entry.get(),
             "Model": self.vehicle_model_entry.get(),
             "Year": self.vehicle_year_entry.get(),
             "Mileage": self.vehicle_mileage_entry.get(),
-            "Nickname": self.vehicle_nickname_entry.get()
+
         }
-        pass
 
+        if not os.path.isfile("vehicles.json"):
+            vehicles = pd.DataFrame(columns=["Nickname", "Brand", "Model", "Year", "Mileage"])
+            vehicles.to_json("vehicles.json", orient="records")
 
+        vehicles = pd.read_json("vehicles.json")
+        vehicles = pd.concat([vehicles, pd.DataFrame([vehicle])], ignore_index=True)
 
+        with open("vehicles.json", "w") as file:
+            json.dump(vehicles.to_dict(orient="records"), file, indent=4)
 
-
-
-
+        self.destroy()
 
 
 
@@ -137,6 +141,14 @@ class App(customtkinter.CTk):
         self.add_vehicle_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Add Vehicle", command=self.open_vehicle_adder)
         self.add_vehicle_button.place(x=650, y=10)
 
+        self.load_vehicles()
+
+    def load_vehicles(self):
+        if os.path.isfile("vehicles.json"):
+            vehicles = pd.read_json("vehicles.json")
+            vehicle_names = vehicles["Nickname"].tolist()
+            self.vehicle_combo.configure(values=vehicle_names)
+
     def open_vehicle_adder(self):
         self.vehicle_adder = VehicleAdder()
         self.vehicle_adder.mainloop()
@@ -159,7 +171,7 @@ class App(customtkinter.CTk):
         except ValueError:
             print("Odometer reading must be a number. Please try again.")
             self.odometer_button.configure(fg_color="red")
-            #Clear the entry
+            # Clear the entry
             self.odometer_entry.delete(0, tkinter.END)
             return
 
@@ -168,7 +180,7 @@ class App(customtkinter.CTk):
         if len(fill_ups) > 0:
             if int(odometer) < fill_ups["Odometer"].iloc[-1]:
                 print("Odometer reading must be greater than the previous reading. Please try again.")
-                #Clear the entry
+                # Clear the entry
                 self.odometer_button.configure(fg_color="red")
                 self.odometer_entry.delete(0, tkinter.END)
                 return
@@ -182,14 +194,14 @@ class App(customtkinter.CTk):
         except ValueError:
             print("Fuel price must be a number. Please try again.")
             self.fuel_price_button.configure(fg_color="red")
-            #Clear the entry
+            # Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
         # Check if the fuel price is less than or equal to zero
         if float(fuel_price) <= 0:
             self.fuel_price_button.configure(fg_color="red")
             print("Fuel price must be greater than zero. Please try again.")
-            #Clear the entry
+            # Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
         else:
@@ -201,12 +213,12 @@ class App(customtkinter.CTk):
             total_gallons = float(total_gallons)
         except ValueError:
             print("Total gallons must be a number. Please try again.")
-            #Clear the entry
+            # Clear the entry
             self.Entry3.delete(0, tkinter.END)
         # Check if the total gallons is less than or equal to zero
         if float(total_gallons) <= 0:
             print("Total gallons must be greater than zero. Please try again.")
-            #Clear the entry
+            # Clear the entry
             self.Entry3.delete(0, tkinter.END)
             return
 
@@ -216,58 +228,26 @@ class App(customtkinter.CTk):
             total_cost = float(total_cost)
         except ValueError:
             print("Total cost must be a number. Please try again.")
-            #Clear the entry
+            # Clear the entry
             self.total_cost_entry.delete(0, tkinter.END)
             return
         # Check if the total cost is less than or equal to zero
         if float(total_cost) <= 0:
             print("Total cost must be greater than zero. Please try again.")
-            #Clear the entry
+            # Clear the entry
             self.total_cost_entry.delete(0, tkinter.END)
         date = self.date_combobox.get()
 
-        # Check if the odometer reading is a number
-        try:
-            odometer = int(odometer)
-        except ValueError:
-            print("Odometer reading must be a number. Please try again.")
-            #Clear the entry
-            self.odometer_entry.delete(0, tkinter.END)
-            return
-
-        # Check if the fuel price is a number
-        try:
-            fuel_price = float(fuel_price)
-        except ValueError:
-            print("Fuel price must be a number. Please try again.")
-            #Clear the entry
-            self.fuel_price_entry.delete(0, tkinter.END)
-            return
-
-        # Check if the total gallons is a number
-        try:
-            total_gallons = float(total_gallons)
-        except ValueError:
-            print("Total gallons must be a number. Please try again.")
-            #Clear the entry
-            self.Entry3.delete(0, tkinter.END)
-            return
-
-        # Check if the total cost is a number
-        try:
-            total_cost = float(total_cost)
-        except ValueError:
-            print("Total cost must be a number. Please try again.")
-            #Clear the entry
-            self.total_cost_entry.delete(0, tkinter.END)
-            return
+        # Get the selected vehicle nickname
+        vehicle_nickname = self.vehicle_combo.get()
 
         fill_up = {
             "Date": date,
             "Odometer": odometer,
             "Gallons": total_gallons,
             "Gas Price": fuel_price,
-            "Total Cost": total_cost
+            "Total Cost": total_cost,
+            "Vehicle Nickname": vehicle_nickname
         }
 
         fill_ups = pd.read_csv("fill_ups.csv")
