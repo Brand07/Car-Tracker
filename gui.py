@@ -11,8 +11,31 @@ class VehicleAdder(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Add Vehicle")
-        self.geometry("300x200")
+        self.geometry("400x500")
         self.resizable(False, False)
+
+        # Configure the grid layout with 5 rows and 5 columns
+        for _ in range (5):
+            self.grid_rowconfigure(_, weight=1)
+            self.grid_columnconfigure(_, weight=1)
+
+
+        self.vehicle_brand_label = customtkinter.CTkLabel(self, text="Vehicle Brand")
+        self.vehicle_brand_label.grid(row=0, column=0, padx=10, pady=10)
+
+        self.vehicle_brand_entry = customtkinter.CTkEntry(self)
+        self.vehicle_brand_entry.grid(row=0, column=1, padx=10, pady=10)
+
+        self.vehicle_model_label = customtkinter.CTkLabel(self, text="Vehicle Model")
+        self.vehicle_model_label.grid(row=1, column=0, padx=10, pady=10)
+
+        self.vehicle_model_entry = customtkinter.CTkEntry(self)
+        self.vehicle_model_entry.grid(row=1, column=1, padx=10, pady=10)
+
+
+
+
+
 
 
 
