@@ -4,7 +4,7 @@ from picker import CTkDatePicker
 import pandas as pd
 import os
 
-customtkinter.set_appearance_mode("System")
+customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
 class App(customtkinter.CTk):
@@ -59,6 +59,15 @@ class App(customtkinter.CTk):
         self.date_combobox.place(x=550, y=420)
 
         CTkDatePicker(self.date_combobox)
+
+        self.vehicle_combo = customtkinter.CTkComboBox(self, values=[], bg_color=['gray86', 'gray17'], justify="center")
+        self.vehicle_combo.place(x=10, y=35)
+
+        self.select_vehicle_label = customtkinter.CTkLabel(self, bg_color=['gray86', 'gray17'], text="Select a vehicle")
+        self.select_vehicle_label.place(x=30, y=2)
+
+        self.add_vehicle_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Add Vehicle")
+        self.add_vehicle_button.place(x=650, y=10)
 
 
 
@@ -198,7 +207,15 @@ class App(customtkinter.CTk):
         self.Entry3.delete(0, tkinter.END)
         self.total_cost_entry.delete(0, tkinter.END)
 
+    def show_total_fill_ups(self):
+        fill_ups = pd.read_csv("fill_ups.csv")
+        print(fill_ups)
+
+
+
+
 
 if __name__ == "__main__":
     app = App()
+    app.show_total_fill_ups()
     app.mainloop()
