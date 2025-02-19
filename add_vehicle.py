@@ -1,4 +1,8 @@
+import os
+import json
+
 import customtkinter
+import pandas as pd
 
 class VehicleAdder(customtkinter.CTk):
     def __init__(self,parent, *args, **kwargs):
@@ -13,7 +17,7 @@ class VehicleAdder(customtkinter.CTk):
             self.grid_rowconfigure(_, weight=1)
             self.grid_columnconfigure(_, weight=1)
 
-        # Vehicile Brand Label and Entry
+        # Vehicle Brand Label and Entry
         self.vehicle_brand_label = customtkinter.CTkLabel(self, text="Vehicle Brand")
         self.vehicle_brand_label.grid(row=0, column=0, padx=10, pady=10)
         self.vehicle_brand_entry = customtkinter.CTkEntry(self)
