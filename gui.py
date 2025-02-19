@@ -66,18 +66,19 @@ class VehicleAdder(customtkinter.CTk):
             "Mileage": self.vehicle_mileage_entry.get(),
         }
 
-        if not os.path.isfile("vehicles.json"):
+        if not os.path.isfile("Resources/vehicles.json"):
             vehicles = pd.DataFrame(columns=["Nickname", "Brand", "Model", "Year", "Mileage"])
-            vehicles.to_json("vehicles.json", orient="records")
+            vehicles.to_json("Resources/vehicles.json", orient="records")
 
         try:
-            vehicles = pd.read_json("vehicles.json")
+            vehicles = pd.read_json("Resources/vehicles.json")
         except ValueError:
             vehicles = pd.DataFrame(columns=["Nickname", "Brand", "Model", "Year", "Mileage"])
 
         vehicles = pd.concat([vehicles, pd.DataFrame([vehicle])], ignore_index=True)
 
-        with open("vehicles.json", "w") as file:
+
+        with open("Resources/vehicles.json", "w") as file:
             json.dump(vehicles.to_dict(orient="records"), file, indent=4)
 
         # Update the combo box in the parent window
@@ -156,10 +157,10 @@ class App(customtkinter.CTk):
         vehicle_adder.mainloop()
 
     def load_vehicles(self):
-        if os.path.isfile("vehicles.json"):
+        if os.path.isfile('Resources/vehicles.json'):
             try:
-                vehicles = pd.read_json("vehicles.json")
-                vehicle_names = vehicles["Nickname"].tolist()
+                vehicles = pd.read_json('Resources/vehicles.json')
+                vehicle_names = [str(name) for name in vehicles['Nickname'].tolist()]
                 self.vehicle_combo.configure(values=vehicle_names)
             except ValueError:
                 print("Error: vehicles.json is empty or contains invalid JSON.")
@@ -182,7 +183,7 @@ class App(customtkinter.CTk):
             return
 
         # Define the file name based on the vehicle nickname
-        file_name = f"{vehicle_nickname}_fill-ups.csv"
+        file_name = f"Resources/{vehicle_nickname}_fill-ups.csv"
 
         # Check if the CSV file exists and is not empty
         if os.path.isfile(file_name) and os.path.getsize(file_name) > 0:
