@@ -15,22 +15,58 @@ class VehicleAdder(customtkinter.CTk):
         self.resizable(False, False)
 
         # Configure the grid layout with 5 rows and 5 columns
-        for _ in range (5):
+        for _ in range (6):
             self.grid_rowconfigure(_, weight=1)
             self.grid_columnconfigure(_, weight=1)
 
-
+        # Vehicile Brand Label and Entry
         self.vehicle_brand_label = customtkinter.CTkLabel(self, text="Vehicle Brand")
         self.vehicle_brand_label.grid(row=0, column=0, padx=10, pady=10)
-
         self.vehicle_brand_entry = customtkinter.CTkEntry(self)
         self.vehicle_brand_entry.grid(row=0, column=1, padx=10, pady=10)
 
+        # Vehicle Model Label and Entry
         self.vehicle_model_label = customtkinter.CTkLabel(self, text="Vehicle Model")
         self.vehicle_model_label.grid(row=1, column=0, padx=10, pady=10)
-
         self.vehicle_model_entry = customtkinter.CTkEntry(self)
         self.vehicle_model_entry.grid(row=1, column=1, padx=10, pady=10)
+
+        # Vehicle Year Label and Entry
+        self.vehicle_year_label = customtkinter.CTkLabel(self, text="Vehicle Year")
+        self.vehicle_year_label.grid(row=2, column=0, padx=10, pady=10)
+        self.vehicle_year_entry = customtkinter.CTkEntry(self)
+        self.vehicle_year_entry.grid(row=2, column=1, padx=10, pady=10)
+
+        # Vehicle Mileage Label and Entry
+        self.vehicle_mileage_label = customtkinter.CTkLabel(self, text="Vehicle Mileage")
+        self.vehicle_mileage_label.grid(row=3, column=0, padx=10, pady=10)
+        self.vehicle_mileage_entry = customtkinter.CTkEntry(self)
+        self.vehicle_mileage_entry.grid(row=3, column=1, padx=10, pady=10)
+
+        # Vehicle Nickname Label and Entry
+        self.vehicle_nickname_label = customtkinter.CTkLabel(self, text="Vehicle Nickname")
+        self.vehicle_nickname_label.grid(row=4, column=0, padx=10, pady=10)
+        self.vehicle_nickname_entry = customtkinter.CTkEntry(self)
+        self.vehicle_nickname_entry.grid(row=4, column=1, padx=10, pady=10)
+
+
+
+        # Submit Button
+        self.submit_button = customtkinter.CTkButton(self, text="Submit", command=self.handle_submit_button)
+        self.submit_button.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
+
+    def handle_submit_button(self):
+        # Create a new entry in the vehicle.json file
+        vehicle = {
+            "Brand": self.vehicle_brand_entry.get(),
+            "Model": self.vehicle_model_entry.get(),
+            "Year": self.vehicle_year_entry.get(),
+            "Mileage": self.vehicle_mileage_entry.get(),
+            "Nickname": self.vehicle_nickname_entry.get()
+        }
+        pass
+
+
 
 
 
