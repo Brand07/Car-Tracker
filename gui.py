@@ -21,10 +21,8 @@ class App(customtkinter.CTk):
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
         self.resizable(False, False)
 
-
         self.top_frame = customtkinter.CTkFrame(self, width=800, height=100)
         self.top_frame.place(x=0, y=0)
-
 
         self.Frame1 = customtkinter.CTkFrame(self, width=800, height=240)
         self.Frame1.place(x=0, y=360)
@@ -83,10 +81,10 @@ class App(customtkinter.CTk):
 
         self.load_vehicles()
 
-    def insert_info_box(self, text):
-        self.info_box.configure(state="normal")
+    def insert_into_info_box(self, text):
+        self.info_box.configure(state='normal')
         self.info_box.insert(1.0, text)
-        self.info_box.configure(state="disabled")
+        self.info_box.configure(state='disabled')
 
 
     def open_vehicle_adder(self):
@@ -103,12 +101,47 @@ class App(customtkinter.CTk):
                 print("Error: vehicles.json is empty or contains invalid JSON.")
                 self.vehicle_combo.configure(values=[])
 
+    def get_odo_reading(self):
+        # Get the user input on the odometer reading
+        current_odometer_reading = self.odometer_entry.get()
+        # Get the last odometer reading from the Excel file based on the selected vehicle
+        vehicle_nickname = self.vehicle_combo.get()
+        print(f"Currently selected vehicle: {vehicle_nickname}")
+        file_name = f"Resources/{vehicle_nickname}_fill-ups.xlsx"
+        print(f"Excel file path: {file_name}")
+
+        if os.path.isfile(file_name) and os.path.getsize(file_name) > 0:
+            fill_ups = pd.read_excel(file_name)
+            print(f"Excel file loaded. Number of records: {len(fill_ups)}")
+            print(f"Excel columns: {fill_ups.columns.tolist()}")
+            if not fill_ups.empty:
+                vehicle_fill_ups = fill_ups[fill_ups["Vehicle Nickname"] == vehicle_nickname]
+                print(f"Filtered records for vehicle '{vehicle_nickname}': {len(vehicle_fill_ups)}")
+                print(vehicle_fill_ups)
+                if not vehicle_fill_ups.empty:
+                    last_odometer = vehicle_fill_ups["Odometer"].astype(int).max()
+                    print(f"Last odometer reading: {last_odometer}")
+                    if int(current_odometer_reading) <= last_odometer:
+                        print("New odometer reading must be greater than the previous reading. Please try again.")
+                        return False
+                    else:
+                        print("New odometer reading is valid.")
+                        self.odometer_entry.delete(0, tkinter.END)
+                        return True
+                else:
+                    print("No records found for the selected vehicle.")
+            else:
+                print("Excel file is empty.")
+        else:
+            print("Excel file does not exist or is empty.")
+        return True
+
     def handle_submit_button(self):
         """Handles the submit button click"""
 
         odometer = self.odometer_entry.get()
         vehicle_nickname = self.vehicle_combo.get()
-        self.insert_info_box(f"Currently selected vehicle: {vehicle_nickname}\n")
+        self.insert_into_info_box(f"Currently selected vehicle: {vehicle_nickname}\n")
 
         # Check if the entry is a number
         try:
@@ -120,21 +153,32 @@ class App(customtkinter.CTk):
             self.odometer_entry.delete(0, tkinter.END)
             return
 
-        # Check if the new odometer reading is valid
-        if not self.get_odometer_reading(odometer):
-            self.odometer_button.configure(fg_color="red")
-            self.odometer_entry.delete(0, tkinter.END)
-            return
-        else:
-            self.odometer_button.configure(fg_color="blue")
-
         # Define the file name based on the vehicle nickname
-        file_name = f"Resources/{vehicle_nickname}_fill-ups.csv"
+        file_name = f"Resources/{vehicle_nickname}_fill-ups.xlsx"
+        print(f"File name: {file_name}")
 
-        # Check if the CSV file exists and is not empty
+        # Check if the Excel file exists and is not empty
         if os.path.isfile(file_name) and os.path.getsize(file_name) > 0:
-            fill_ups = pd.read_csv(file_name)
+            print("File exists and is not empty.")
+            fill_ups = pd.read_excel(file_name, engine='openpyxl')
+            print(f"Loaded fill-ups: {fill_ups}")
+            if not fill_ups.empty:
+                fill_ups["Vehicle Nickname"] = fill_ups["Vehicle Nickname"].astype(str)
+                vehicle_fill_ups = fill_ups[fill_ups["Vehicle Nickname"] == vehicle_nickname]
+                print(f"Filtered fill-ups: {vehicle_fill_ups}")
+                if not vehicle_fill_ups.empty:
+                    last_odometer = vehicle_fill_ups["Odometer"].astype(int).max()
+                    print(f"Last odometer reading: {last_odometer}")
+                    if int(odometer) <= last_odometer:
+                        print("New odometer reading must be greater than the previous reading. Please try again.")
+                        self.odometer_button.configure(fg_color="red")
+                        self.insert_into_info_box(f"New odometer reading must be greater than the previous reading. Please try again.\n")
+                        self.odometer_entry.delete(0, tkinter.END)
+                        return
+                    else:
+                        self.odometer_button.configure(fg_color="blue")
         else:
+            print("File does not exist or is empty.")
             fill_ups = pd.DataFrame(
                 columns=["Vehicle Nickname", "Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
 
@@ -191,34 +235,13 @@ class App(customtkinter.CTk):
         }
 
         fill_ups = pd.concat([fill_ups, pd.DataFrame([fill_up])], ignore_index=True)
-        fill_ups.to_csv(file_name, index=False)
+        fill_ups.to_excel(file_name, index=False, engine='openpyxl')
 
         self.odometer_entry.delete(0, tkinter.END)
         self.fuel_price_entry.delete(0, tkinter.END)
         self.Entry3.delete(0, tkinter.END)
         self.total_cost_entry.delete(0, tkinter.END)
 
-    def get_odometer_reading(self, new_odometer):
-        # Get the nickname of the selected vehicle
-        vehicle_nickname = self.vehicle_combo.get()
-        # Define the file name based on the vehicle nickname
-        file_name = f"Resources/{vehicle_nickname}_fill-ups.csv"
-
-        # Check if the CSV file exists and is not empty
-        if os.path.isfile(file_name) and os.path.getsize(file_name) > 0:
-            fill_ups = pd.read_csv(file_name)
-            if not fill_ups.empty:
-                # Filter by the selected vehicle nickname
-                vehicle_fill_ups = fill_ups[fill_ups["Vehicle Nickname"] == vehicle_nickname]
-                if not vehicle_fill_ups.empty:
-                    # Get the last odometer reading
-                    last_odometer = vehicle_fill_ups["Odometer"].astype(int).max()
-                    print(f"Last odometer reading: {last_odometer}")
-                    # Compare the new odometer reading with the last one
-                    if int(new_odometer) <= last_odometer:
-                        print("New odometer reading must be greater than the previous reading. Please try again.")
-                        return False
-        return True
 
 
 
@@ -226,7 +249,7 @@ class App(customtkinter.CTk):
 
 
     def show_total_fill_ups(self):
-        fill_ups = pd.read_csv("fill_ups.csv")
+        fill_ups = pd.read_excel("fill_ups.xlsx")
         print(fill_ups)
 
 
