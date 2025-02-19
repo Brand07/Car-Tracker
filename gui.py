@@ -9,8 +9,9 @@ customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
 class VehicleAdder(customtkinter.CTk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self,parent, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.parent = parent
         self.title("Add Vehicle")
         self.geometry("400x500")
         self.resizable(False, False)
@@ -78,6 +79,9 @@ class VehicleAdder(customtkinter.CTk):
 
         with open("vehicles.json", "w") as file:
             json.dump(vehicles.to_dict(orient="records"), file, indent=4)
+
+        # Update the combo box in the parent window
+        self.parent.load_vehicles()
 
         self.destroy()
 
@@ -147,6 +151,10 @@ class App(customtkinter.CTk):
 
         self.load_vehicles()
 
+    def open_vehicle_adder(self):
+        vehicle_adder = VehicleAdder(self)
+        vehicle_adder.mainloop()
+
     def load_vehicles(self):
         if os.path.isfile("vehicles.json"):
             try:
@@ -157,22 +165,12 @@ class App(customtkinter.CTk):
                 print("Error: vehicles.json is empty or contains invalid JSON.")
                 self.vehicle_combo.configure(values=[])
 
-    def open_vehicle_adder(self):
-        self.vehicle_adder = VehicleAdder()
-        self.vehicle_adder.mainloop()
-
-
-
-
-        # Check if the CSV file exists before initializing the DataFrame
-        if not os.path.isfile("fill_ups.csv"):
-            fill_ups = pd.DataFrame(columns=["Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
-            fill_ups.to_csv("fill_ups.csv", index=False)
-
     def handle_submit_button(self):
         """Handles the submit button click"""
 
         odometer = self.odometer_entry.get()
+        vehicle_nickname = self.vehicle_combo.get()
+
         # Check if the entry is a number
         try:
             odometer = int(odometer)
@@ -183,17 +181,28 @@ class App(customtkinter.CTk):
             self.odometer_entry.delete(0, tkinter.END)
             return
 
-        # Check if the odometer reading is less than what it was before
-        fill_ups = pd.read_csv("fill_ups.csv")
-        if len(fill_ups) > 0:
-            if int(odometer) < fill_ups["Odometer"].iloc[-1]:
-                print("Odometer reading must be greater than the previous reading. Please try again.")
-                # Clear the entry
-                self.odometer_button.configure(fg_color="red")
-                self.odometer_entry.delete(0, tkinter.END)
-                return
-            else:
-                self.odometer_button.configure(fg_color="blue")
+        # Define the file name based on the vehicle nickname
+        file_name = f"{vehicle_nickname}_fill-ups.csv"
+
+        # Check if the CSV file exists and is not empty
+        if os.path.isfile(file_name) and os.path.getsize(file_name) > 0:
+            fill_ups = pd.read_csv(file_name)
+            if len(fill_ups) > 0:
+                # Filter by the selected vehicle nickname
+                vehicle_fill_ups = fill_ups[fill_ups["Vehicle Nickname"] == vehicle_nickname]
+                if not vehicle_fill_ups.empty:
+                    last_odometer = vehicle_fill_ups["Odometer"].iloc[-1]
+                    if int(odometer) <= last_odometer:
+                        print(
+                            "Odometer reading must be greater than the previous reading for this vehicle. Please try again.")
+                        self.odometer_button.configure(fg_color="red")
+                        self.odometer_entry.delete(0, tkinter.END)
+                        return
+                    else:
+                        self.odometer_button.configure(fg_color="blue")
+        else:
+            fill_ups = pd.DataFrame(
+                columns=["Vehicle Nickname", "Date", "Odometer", "Gallons", "Gas Price", "Total Cost"])
 
         fuel_price = self.fuel_price_entry.get()
         # Check if the entry is a number or float
@@ -202,52 +211,38 @@ class App(customtkinter.CTk):
         except ValueError:
             print("Fuel price must be a number. Please try again.")
             self.fuel_price_button.configure(fg_color="red")
-            # Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
-        # Check if the fuel price is less than or equal to zero
         if float(fuel_price) <= 0:
             self.fuel_price_button.configure(fg_color="red")
             print("Fuel price must be greater than zero. Please try again.")
-            # Clear the entry
             self.fuel_price_entry.delete(0, tkinter.END)
             return
         else:
             self.fuel_price_button.configure(fg_color="blue")
 
         total_gallons = self.Entry3.get()
-        # Check if the entry is a number or float
         try:
             total_gallons = float(total_gallons)
         except ValueError:
             print("Total gallons must be a number. Please try again.")
-            # Clear the entry
             self.Entry3.delete(0, tkinter.END)
-        # Check if the total gallons is less than or equal to zero
         if float(total_gallons) <= 0:
             print("Total gallons must be greater than zero. Please try again.")
-            # Clear the entry
             self.Entry3.delete(0, tkinter.END)
             return
 
         total_cost = self.total_cost_entry.get()
-        # Check if the entry is a number or float
         try:
             total_cost = float(total_cost)
         except ValueError:
             print("Total cost must be a number. Please try again.")
-            # Clear the entry
             self.total_cost_entry.delete(0, tkinter.END)
             return
-        # Check if the total cost is less than or equal to zero
         if float(total_cost) <= 0:
             print("Total cost must be greater than zero. Please try again.")
-            # Clear the entry
             self.total_cost_entry.delete(0, tkinter.END)
         date = self.date_combobox.get()
-
-        # Get the selected vehicle nickname
-        vehicle_nickname = self.vehicle_combo.get()
 
         fill_up = {
             "Vehicle Nickname": vehicle_nickname,
@@ -256,14 +251,11 @@ class App(customtkinter.CTk):
             "Gallons": total_gallons,
             "Gas Price": fuel_price,
             "Total Cost": total_cost,
-
         }
 
-        fill_ups = pd.read_csv("fill_ups.csv")
-        fill_ups = pd.concat([fill_ups, pd.DataFrame([fill_up])], ignore_index=True)
-        fill_ups.to_csv("fill_ups.csv", index=False)
+        fill_ups = pd.DataFrame([fill_up])
+        fill_ups.to_csv(file_name, mode='a', header=not os.path.isfile(file_name), index=False)
 
-        # Clear the entries
         self.odometer_entry.delete(0, tkinter.END)
         self.fuel_price_entry.delete(0, tkinter.END)
         self.Entry3.delete(0, tkinter.END)
