@@ -25,23 +25,9 @@ def load_vehicles(app):
         except ValueError:
             print("Error: vehicles.json is empty or contains invalid JSON.")
             app.vehicle_combo.configure(values=[])
-    try:
-        # Auto-select the first vehicle in the list
-        if app.vehicle_combo.get() == "":
-            app.vehicle_combo.set(app.vehicle_combo["values"][0])
-    except IndexError:
-        print("No vehicles available.")
-        app.vehicle_combo.configure(values=[])
 
 
-def load_first_vehicle(app):
-    try:
-        # Auto-select the first vehicle in the list
-        if app.vehicle_combo.get() == "":
-            app.vehicle_combo.set(app.vehicle_combo["values"][0])
-    except IndexError:
-        print("No vehicles available.")
-        app.vehicle_combo.configure(values=[])
+
 
 
 def get_odo_reading(app):

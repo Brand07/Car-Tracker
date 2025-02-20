@@ -129,7 +129,7 @@ class Window(customtkinter.CTk):
         CTkDatePicker(self.date_combobox)
 
         self.vehicle_combo = customtkinter.CTkComboBox(
-            self, values=[], bg_color=["gray86", "gray17"], justify="center"
+            self, values=[""], bg_color=["gray86", "gray17"], justify="center"
         )
         self.vehicle_combo.place(x=10, y=35)
 
@@ -161,7 +161,7 @@ class Window(customtkinter.CTk):
 
     def load_vehicles(self):
         functions.load_vehicles(self)
-        functions.load_first_vehicle(self)
+
 
     # Auto-select the first vehicle in the list
     def load_first_vehicle(self):
