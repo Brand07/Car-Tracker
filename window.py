@@ -167,3 +167,6 @@ class Window(customtkinter.CTk):
 
     def open_vehicle_adder(self):
         VehicleAdder(self)
+
+    def open_more_tools(self):
+        MoreTools(self)
