@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from add_vehicle import VehicleAdder
 import tkinter
+from tools import MoreTools
 
 def insert_into_info_box(app, text):
     app.info_box.configure(state="normal")
@@ -147,3 +148,7 @@ def calculate_fuel_efficiency(app, vehicle_nickname):
             insert_into_info_box(app, f"No data available for {vehicle_nickname}.\n")
     else:
         insert_into_info_box(app, f"No data available for {vehicle_nickname}.\n")
+
+def open_more_tools(app):
+    MoreTools(app)
+
