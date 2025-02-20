@@ -1,3 +1,5 @@
+# This design will certainly change. Currently, this is a placeholder for the main GUI.
+
 import tkinter
 import customtkinter
 from picker import CTkDatePicker
