@@ -51,6 +51,11 @@ class App(customtkinter.CTk):
         self.total_cost_entry = customtkinter.CTkEntry(self, bg_color=['gray86', 'gray17'], width=160)
         self.total_cost_entry.place(x=320, y=520)
 
+        self.more_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'],
+                                                     font=customtkinter.CTkFont('Roboto', size=26, weight='bold'),
+                                                     height=50, text="More", fg_color="#00b900", text_color="#000000")
+        self.more_button.place(x=500, y=545)
+
         self.submit_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], font=customtkinter.CTkFont('Roboto', size=26, weight='bold'), height=50, text="Submit", fg_color="#00b900", text_color="#000000", command=self.handle_submit_button)
         self.submit_button.place(x=655, y=545)
 
@@ -72,7 +77,7 @@ class App(customtkinter.CTk):
         self.add_vehicle_button.place(x=650, y=10)
 
         self.info_box = customtkinter.CTkTextbox(self,bg_color=['gray92','gray14'],
-            width=460,
+            width=792,
             height=250,
             corner_radius=5,
             border_width=3)
@@ -84,6 +89,11 @@ class App(customtkinter.CTk):
     def insert_into_info_box(self, text):
         self.info_box.configure(state='normal')
         self.info_box.insert(1.0, text)
+        self.info_box.configure(state='disabled')
+
+    def clear_info_box(self):
+        self.info_box.configure(state='normal')
+        self.info_box.delete(1.0, tkinter.END)
         self.info_box.configure(state='disabled')
 
 
@@ -106,7 +116,7 @@ class App(customtkinter.CTk):
         current_odometer_reading = self.odometer_entry.get()
         # Get the last odometer reading from the Excel file based on the selected vehicle
         vehicle_nickname = self.vehicle_combo.get()
-        print(f"Currently selected vehicle: {vehicle_nickname}")
+        #print(f"Currently selected vehicle: {vehicle_nickname}")
         file_name = f"Resources/{vehicle_nickname}_fill-ups.xlsx"
         print(f"Excel file path: {file_name}")
 
@@ -251,7 +261,7 @@ class App(customtkinter.CTk):
         if os.path.isfile(file_name):
             fill_ups = pd.read_excel(file_name)
             total_cost = fill_ups["Total Cost"].sum()
-            self.insert_into_info_box(f"Total cost for {vehicle_nickname}: ${total_cost:.2f}\n")
+            self.insert_into_info_box(f"Statistics on  {vehicle_nickname}: \n${total_cost:.2f}\n{len(fill_ups)} fill-ups\n")
         else:
             self.insert_into_info_box(f"No data available for {vehicle_nickname}.\n")
 
