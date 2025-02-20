@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-from add_vehicle import VehicleAdder
 import tkinter
 from tools import MoreTools
 

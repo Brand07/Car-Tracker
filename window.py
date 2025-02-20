@@ -1,13 +1,9 @@
-import os
-import tkinter
 import customtkinter
 
 import functions
 from picker import CTkDatePicker
 from add_vehicle import VehicleAdder
-from functions import handle_submit_button
 from tools import MoreTools
-import pandas as pd
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
