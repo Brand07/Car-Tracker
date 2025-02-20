@@ -178,3 +178,4 @@ cython_debug/
 /Gui_Files/
 /Gui_Files/
 *.xlsx
+/Resources/vehicles.json
