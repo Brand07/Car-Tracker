@@ -65,7 +65,7 @@ class App(customtkinter.CTk):
         self.vehicle_combo = customtkinter.CTkComboBox(self, values=[], bg_color=['gray86', 'gray17'], justify="center")
         self.vehicle_combo.place(x=10, y=35)
 
-        self.select_vehicle_label = customtkinter.CTkLabel(self, bg_color=['gray86', 'gray17'], text="Select a vehicle")
+        self.select_vehicle_label = customtkinter.CTkLabel(self, text="Select a vehicle")
         self.select_vehicle_label.place(x=30, y=2)
 
         self.add_vehicle_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], text="Add Vehicle", command=self.open_vehicle_adder)
@@ -241,16 +241,19 @@ class App(customtkinter.CTk):
         self.fuel_price_entry.delete(0, tkinter.END)
         self.Entry3.delete(0, tkinter.END)
         self.total_cost_entry.delete(0, tkinter.END)
+        self.show_total_cost_for_vehicle()
 
 
 
-
-
-
-
-    def show_total_fill_ups(self):
-        fill_ups = pd.read_excel("fill_ups.xlsx")
-        print(fill_ups)
+    def show_total_cost_for_vehicle(self):
+        vehicle_nickname = self.vehicle_combo.get()
+        file_name = f"Resources/{vehicle_nickname}_fill-ups.xlsx"
+        if os.path.isfile(file_name):
+            fill_ups = pd.read_excel(file_name)
+            total_cost = fill_ups["Total Cost"].sum()
+            self.insert_into_info_box(f"Total cost for {vehicle_nickname}: ${total_cost:.2f}\n")
+        else:
+            self.insert_into_info_box(f"No data available for {vehicle_nickname}.\n")
 
 
 
