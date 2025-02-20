@@ -175,7 +175,5 @@ cython_debug/
 /.idea/modules.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
-/Gui_Files/
-/Gui_Files/
 *.xlsx
 /Resources/vehicles.json
