@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 from gui import App
 
 #Create a Resources folder if it doesn't exist
