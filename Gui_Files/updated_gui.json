@@ -1,0 +1,239 @@
+{
+  "Pages": [
+    "Page 1"
+  ],
+  "CTk": {
+    "title": "MPG Tracker v0.2",
+    "fg_color": [
+      "gray92",
+      "gray14"
+    ],
+    "width": 1000,
+    "height": 700
+  },
+  "CTkFrame1": {
+    "x": 0,
+    "y": 0,
+    "master": "Page 1",
+    "fg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 350,
+    "height": 700,
+    "corner_radius": 0
+  },
+  "CTkComboBox2": {
+    "x": 5,
+    "y": 5,
+    "values": [],
+    "name": "vehicle_selection",
+    "border_width": 3,
+    "master": "Page 1",
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ]
+  },
+  "CTkLabel3": {
+    "x": 100,
+    "y": 115,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
+    "text": "Current Odometer Reading",
+    "master": "Page 1",
+    "name": "odo_reading_label"
+  },
+  "CTkEntry4": {
+    "x": 100,
+    "y": 150,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "odometer_entry",
+    "width": 150,
+    "master": "Page 1"
+  },
+  "CTkLabel5": {
+    "x": 100,
+    "y": 200,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
+    "text": "Gas Price (Gallon)",
+    "master": "Page 1",
+    "name": "gas_price_label"
+  },
+  "CTkEntry6": {
+    "x": 100,
+    "y": 235,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 150,
+    "master": "Page 1"
+  },
+  "CTkLabel7": {
+    "x": 100,
+    "y": 285,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
+    "text": "Total Gallons",
+    "master": "Page 1",
+    "name": "total_gallon_label"
+  },
+  "CTkEntry8": {
+    "x": 100,
+    "y": 314,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "width": 150,
+    "master": "Page 1",
+    "name": "total_gallon_entry"
+  },
+  "CTkButton9": {
+    "x": 101,
+    "y": 400,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "submit_button",
+    "font": "customtkinter.CTkFont('Roboto', size=19, weight='bold')",
+    "width": 160,
+    "text": "Submit",
+    "fg_color": "#008000",
+    "master": "Page 1"
+  },
+  "CTkTextbox10": {
+    "x": 25,
+    "y": 445,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "info_box",
+    "width": 300,
+    "border_width": 3,
+    "inserted_text": "",
+    "master": "Page 1"
+  },
+  "CTkButton11": {
+    "x": 205,
+    "y": 5,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "add_vehicle_button",
+    "font": "customtkinter.CTkFont('Roboto', size=13, weight='bold')",
+    "text": "Add Vehicle",
+    "master": "Page 1"
+  },
+  "CTkFrame12": {
+    "x": 348,
+    "y": 420,
+    "name": "info_frame",
+    "width": 662,
+    "height": 280,
+    "corner_radius": 0,
+    "master": "Page 1"
+  },
+  "CTkLabel13": {
+    "x": 535,
+    "y": 470,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "last_readings_label",
+    "font": "customtkinter.CTkFont('Roboto', size=17, weight='bold', underline=1)",
+    "text": "Last  Readings For Selected Vehicle",
+    "master": "Page 1",
+    "lock": true
+  },
+  "CTkButton14": {
+    "x": 400,
+    "y": 515,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "lock": true,
+    "name": "odometer_button",
+    "text": "",
+    "hover": false,
+    "master": "Page 1"
+  },
+  "CTkButton15": {
+    "x": 600,
+    "y": 515,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "lock": true,
+    "name": "gas_price_button",
+    "text": "",
+    "hover": false,
+    "master": "Page 1"
+  },
+  "CTkButton16": {
+    "x": 800,
+    "y": 515,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "lock": true,
+    "name": "total_gallons_button",
+    "text": "",
+    "hover": false,
+    "master": "Page 1"
+  },
+  "CTkLabel17": {
+    "x": 441,
+    "y": 555,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "name": "last_odo_label",
+    "text": "Odometer",
+    "master": "Page 1"
+  },
+  "CTkLabel18": {
+    "x": 639,
+    "y": 555,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Gas Price",
+    "master": "Page 1",
+    "name": "last_gas_price_label"
+  },
+  "CTkLabel19": {
+    "x": 847,
+    "y": 555,
+    "bg_color": [
+      "gray86",
+      "gray17"
+    ],
+    "text": "Gallons",
+    "master": "Page 1",
+    "name": "gallons_label"
+  }
+}
