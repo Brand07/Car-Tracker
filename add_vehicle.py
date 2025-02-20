@@ -37,13 +37,17 @@ class VehicleAdder(customtkinter.CTkToplevel):
         self.vehicle_year_entry.grid(row=2, column=1, padx=10, pady=10)
 
         # Vehicle Mileage Label and Entry
-        self.vehicle_mileage_label = customtkinter.CTkLabel(self, text="Vehicle Mileage")
+        self.vehicle_mileage_label = customtkinter.CTkLabel(
+            self, text="Vehicle Mileage"
+        )
         self.vehicle_mileage_label.grid(row=3, column=0, padx=10, pady=10)
         self.vehicle_mileage_entry = customtkinter.CTkEntry(self)
         self.vehicle_mileage_entry.grid(row=3, column=1, padx=10, pady=10)
 
         # Vehicle Nickname Label and Entry
-        self.vehicle_nickname_label = customtkinter.CTkLabel(self, text="Vehicle Nickname")
+        self.vehicle_nickname_label = customtkinter.CTkLabel(
+            self, text="Vehicle Nickname"
+        )
         self.vehicle_nickname_label.grid(row=4, column=0, padx=10, pady=10)
         self.vehicle_nickname_entry = customtkinter.CTkEntry(self)
         self.vehicle_nickname_entry.grid(row=4, column=1, padx=10, pady=10)
@@ -55,7 +59,7 @@ class VehicleAdder(customtkinter.CTkToplevel):
         self.submit_button.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
 
         # Set focus and bring the VehicleAdder window to the front
-        #self.focus_set()
+        # self.focus_set()
         self.lift()
 
     def handle_submit_button(self):

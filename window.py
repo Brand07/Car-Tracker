@@ -8,6 +8,7 @@ from tools import MoreTools
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
+
 class Window(customtkinter.CTk):
     HEIGHT = 600
     WIDTH = 800
@@ -160,6 +161,11 @@ class Window(customtkinter.CTk):
 
     def load_vehicles(self):
         functions.load_vehicles(self)
+        functions.load_first_vehicle(self)
+
+    # Auto-select the first vehicle in the list
+    def load_first_vehicle(self):
+        functions.load_first_vehicle(self)
 
     def open_vehicle_adder(self):
         VehicleAdder(self)
