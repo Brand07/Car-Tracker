@@ -1,9 +1,11 @@
 import os
 import tkinter
 import customtkinter
+
+import functions
 from picker import CTkDatePicker
 from add_vehicle import VehicleAdder
-from functions import insert_into_info_box, clear_info_box, load_vehicles, get_odo_reading, handle_submit_button, show_total_cost_for_vehicle, calculate_fuel_efficiency
+from functions import handle_submit_button
 from tools import MoreTools
 import pandas as pd
 
@@ -97,7 +99,7 @@ class Window(customtkinter.CTk):
             text="More",
             fg_color="#00b900",
             text_color="#000000",
-            command=lambda:self.open_more_tools,
+            command=lambda: functions.open_more_tools(self),
         )
         self.more_button.place(x=500, y=545)
 
@@ -109,7 +111,7 @@ class Window(customtkinter.CTk):
             text="Submit",
             fg_color="#00b900",
             text_color="#000000",
-            command=lambda:self.handle_submit_button,
+            command=lambda: functions.handle_submit_button(self),
         )
         self.submit_button.place(x=655, y=545)
 
@@ -143,7 +145,7 @@ class Window(customtkinter.CTk):
             self,
             bg_color=["gray86", "gray17"],
             text="Add Vehicle",
-            command=lambda:self.open_vehicle_adder,
+            command=self.open_vehicle_adder,
         )
         self.add_vehicle_button.place(x=650, y=10)
 
@@ -158,4 +160,10 @@ class Window(customtkinter.CTk):
         self.info_box.place(x=4, y=105)
         self.info_box.insert(1.0, "")
 
-        #self.load_vehicles()
+        self.load_vehicles()
+
+    def load_vehicles(self):
+        functions.load_vehicles(self)
+
+    def open_vehicle_adder(self):
+        VehicleAdder(self)

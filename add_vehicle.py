@@ -1,16 +1,16 @@
 import os
 import json
-
+import functions
 import customtkinter
 import pandas as pd
 
 
-class VehicleAdder(customtkinter.CTk):
-    def __init__(self, parent, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+class VehicleAdder(customtkinter.CTkToplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
         self.parent = parent
         self.title("Add Vehicle")
-        self.geometry("400x500")
+        self.geometry("300x500")
         self.resizable(False, False)
 
         # Configure the grid layout with 5 rows and 5 columns
@@ -37,17 +37,13 @@ class VehicleAdder(customtkinter.CTk):
         self.vehicle_year_entry.grid(row=2, column=1, padx=10, pady=10)
 
         # Vehicle Mileage Label and Entry
-        self.vehicle_mileage_label = customtkinter.CTkLabel(
-            self, text="Vehicle Mileage"
-        )
+        self.vehicle_mileage_label = customtkinter.CTkLabel(self, text="Vehicle Mileage")
         self.vehicle_mileage_label.grid(row=3, column=0, padx=10, pady=10)
         self.vehicle_mileage_entry = customtkinter.CTkEntry(self)
         self.vehicle_mileage_entry.grid(row=3, column=1, padx=10, pady=10)
 
         # Vehicle Nickname Label and Entry
-        self.vehicle_nickname_label = customtkinter.CTkLabel(
-            self, text="Vehicle Nickname"
-        )
+        self.vehicle_nickname_label = customtkinter.CTkLabel(self, text="Vehicle Nickname")
         self.vehicle_nickname_label.grid(row=4, column=0, padx=10, pady=10)
         self.vehicle_nickname_entry = customtkinter.CTkEntry(self)
         self.vehicle_nickname_entry.grid(row=4, column=1, padx=10, pady=10)
@@ -57,6 +53,10 @@ class VehicleAdder(customtkinter.CTk):
             self, text="Submit", command=self.handle_submit_button
         )
         self.submit_button.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
+
+        # Set focus and bring the VehicleAdder window to the front
+        #self.focus_set()
+        self.lift()
 
     def handle_submit_button(self):
         vehicle = {
@@ -86,6 +86,6 @@ class VehicleAdder(customtkinter.CTk):
             json.dump(vehicles.to_dict(orient="records"), file, indent=4)
 
         # Update the combo box in the parent window
-        self.parent.load_vehicles()
+        functions.load_vehicles(self.parent)
 
         self.destroy()

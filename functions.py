@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from add_vehicle import VehicleAdder
 import tkinter
 
 def insert_into_info_box(app, text):
