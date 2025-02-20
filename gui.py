@@ -2,6 +2,7 @@ import tkinter
 import customtkinter
 from picker import CTkDatePicker
 from add_vehicle import VehicleAdder
+from tools import MoreTools
 import pandas as pd
 import os
 import json
@@ -53,7 +54,8 @@ class App(customtkinter.CTk):
 
         self.more_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'],
                                                      font=customtkinter.CTkFont('Roboto', size=26, weight='bold'),
-                                                     height=50, text="More", fg_color="#00b900", text_color="#000000")
+                                                     height=50, text="More", fg_color="#00b900", text_color="#000000",
+                                                     command=self.open_more_tools)
         self.more_button.place(x=500, y=545)
 
         self.submit_button = customtkinter.CTkButton(self, bg_color=['gray86', 'gray17'], font=customtkinter.CTkFont('Roboto', size=26, weight='bold'), height=50, text="Submit", fg_color="#00b900", text_color="#000000", command=self.handle_submit_button)
@@ -100,6 +102,10 @@ class App(customtkinter.CTk):
     def open_vehicle_adder(self):
         vehicle_adder = VehicleAdder(self)
         vehicle_adder.mainloop()
+
+    def open_more_tools(self):
+        more_tools = MoreTools(self)
+        more_tools.mainloop()
 
     def load_vehicles(self):
         if os.path.isfile('Resources/vehicles.json'):
@@ -251,8 +257,8 @@ class App(customtkinter.CTk):
         self.fuel_price_entry.delete(0, tkinter.END)
         self.Entry3.delete(0, tkinter.END)
         self.total_cost_entry.delete(0, tkinter.END)
-        self.show_total_cost_for_vehicle()
-
+        #self.calculate_fuel_efficiency(vehicle_nickname)
+        #self.show_total_cost_for_vehicle()
 
 
     def show_total_cost_for_vehicle(self):
@@ -262,6 +268,21 @@ class App(customtkinter.CTk):
             fill_ups = pd.read_excel(file_name)
             total_cost = fill_ups["Total Cost"].sum()
             self.insert_into_info_box(f"Statistics on  {vehicle_nickname}: \n${total_cost:.2f}\n{len(fill_ups)} fill-ups\n")
+        else:
+            self.insert_into_info_box(f"No data available for {vehicle_nickname}.\n")
+
+    def calculate_fuel_efficiency(self, vehicle_nickname):
+        file_name = f"Resources/{vehicle_nickname}_fill-ups.xlsx"
+        if os.path.isfile(file_name):
+            fill_ups = pd.read_excel(file_name)
+            if not fill_ups.empty:
+                fill_ups["Odometer"] = fill_ups["Odometer"].astype(int)
+                fill_ups["Gallons"] = fill_ups["Gallons"].astype(float)
+                fill_ups.sort_values(by="Date", inplace=True)
+                fill_ups["Fuel Efficiency"] = (fill_ups["Odometer"].diff() / fill_ups["Gallons"].diff()).fillna(0)
+                self.insert_into_info_box(f"Fuel Efficiency for {vehicle_nickname}: \n{fill_ups['Fuel Efficiency'].mean():.2f} MPG\n")
+            else:
+                self.insert_into_info_box(f"No data available for {vehicle_nickname}.\n")
         else:
             self.insert_into_info_box(f"No data available for {vehicle_nickname}.\n")
 
