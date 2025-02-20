@@ -3,12 +3,7 @@ import ctkdlib  # pip install ctkdlib
 
 
 class CTkDatePicker(customtkinter.CTkToplevel):
-    def __init__(self,
-                 master,
-                 height=200,
-                 width=200,
-                 **kwargs):
-
+    def __init__(self, master, height=200, width=200, **kwargs):
         super().__init__(takefocus=1)
 
         self.attach = master
@@ -17,10 +12,16 @@ class CTkDatePicker(customtkinter.CTkToplevel):
 
         self.overrideredirect(True)
 
-        self.attach._canvas.tag_bind("right_parts", "<Button-1>", lambda e: self._iconify())
-        self.attach._canvas.tag_bind("dropdown_arrow", "<Button-1>", lambda e: self._iconify())
-        self.attach.bind('<Configure>', lambda e: self._withdraw(), add="+")
-        self.attach.winfo_toplevel().bind('<Configure>', lambda e: self._withdraw(), add="+")
+        self.attach._canvas.tag_bind(
+            "right_parts", "<Button-1>", lambda e: self._iconify()
+        )
+        self.attach._canvas.tag_bind(
+            "dropdown_arrow", "<Button-1>", lambda e: self._iconify()
+        )
+        self.attach.bind("<Configure>", lambda e: self._withdraw(), add="+")
+        self.attach.winfo_toplevel().bind(
+            "<Configure>", lambda e: self._withdraw(), add="+"
+        )
 
         self.frame = customtkinter.CTkFrame(self)
         self.frame.pack(fill="both", expand=True)
@@ -38,7 +39,8 @@ class CTkDatePicker(customtkinter.CTkToplevel):
         self.hide = True
 
     def _iconify(self):
-        if self.attach.cget("state") == "disabled": return
+        if self.attach.cget("state") == "disabled":
+            return
 
         if self.winfo_ismapped():
             self.hide = False
@@ -64,7 +66,7 @@ class CTkDatePicker(customtkinter.CTkToplevel):
         x_pos = self.attach.winfo_rootx()
         y_pos = self.attach.winfo_rooty() + self.attach.winfo_reqheight()
 
-        self.geometry('{}x{}+{}+{}'.format(self.width, self.height, x_pos, y_pos))
+        self.geometry("{}x{}+{}+{}".format(self.width, self.height, x_pos, y_pos))
 
 
 if __name__ == "__main__":
