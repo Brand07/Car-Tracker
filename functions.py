@@ -45,7 +45,7 @@ def get_odo_reading(app):
 def handle_submit_button(app):
     odometer = app.odometer_entry.get()
     vehicle_nickname = app.vehicle_combo.get()
-    insert_into_info_box(app, f"Currently selected vehicle: {vehicle_nickname}\n")
+    #insert_into_info_box(app, f"Currently selected vehicle: {vehicle_nickname}\n")
     try:
         odometer = int(odometer.strip())
     except ValueError:
