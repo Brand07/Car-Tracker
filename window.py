@@ -29,7 +29,8 @@ class Window(customtkinter.CTk):
             self,
             bg_color=["gray86", "gray17"],
             fg_color="blue",
-            text="Current Odometer Reading",
+            width=160,
+            text="Current Odometer",
             hover=False,
             font=customtkinter.CTkFont("Roboto", size=13, weight="bold"),
         )
