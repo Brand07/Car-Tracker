@@ -9,6 +9,8 @@ def insert_into_info_box(app, text):
     app.info_box.insert(1.0, text)
     app.info_box.configure(state="disabled")
 
+def disable_info_box(app):
+    app.info_box.configure(state="disabled")
 
 def clear_info_box(app):
     app.info_box.configure(state="normal")
@@ -150,6 +152,8 @@ def handle_submit_button(app):
     app.fuel_price_entry.delete(0, tkinter.END)
     app.Entry3.delete(0, tkinter.END)
     app.total_cost_entry.delete(0, tkinter.END)
+
+
 
 
 def show_total_cost_for_vehicle(app):

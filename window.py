@@ -159,10 +159,11 @@ class Window(customtkinter.CTk):
         self.info_box.insert(1.0, "")
 
         self.load_vehicles()
+        self.disable_info_box()
+
 
     def load_vehicles(self):
         functions.load_vehicles(self)
-
 
     # Auto-select the first vehicle in the list
     def load_first_vehicle(self):
@@ -173,3 +174,6 @@ class Window(customtkinter.CTk):
 
     def open_more_tools(self):
         MoreTools(self)
+
+    def disable_info_box(self):
+        functions.disable_info_box(self)
